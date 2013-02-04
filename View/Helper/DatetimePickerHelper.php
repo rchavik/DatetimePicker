@@ -10,8 +10,16 @@ class DatetimePickerHelper extends CroogoFormHelper {
 		'Js',
 	);
 
-	public function afterRender() {
-		$this->_View->Js->buffer('$(\'.input-prepend.date,.input-append.date\').datetimepicker()');
+	public function beforeRender($viewFile) {
+		parent::beforeRender($viewFile);
+		if (Configure::read('DatetimePicker.assets') !== true) {
+			return;
+		}
+		$View = $this->_View;
+		$o = array('inline' => false);
+		$View->Html->script('DatetimePicker.bootstrap-datetimepicker', $o);
+		$View->Html->css('DatetimePicker.bootstrap-datetimepicker', null, $o);
+		$View->Js->buffer('$(\'.input-prepend.date,.input-append.date\').datetimepicker()');
 	}
 
 	protected function _datePickerOptions($fieldName, $options) {
@@ -67,7 +75,7 @@ class DatetimePickerHelper extends CroogoFormHelper {
 	protected function _dateValue($fieldName, $options) {
 		list($model, $field) = pluginSplit($fieldName);
 		if (empty($model)) {
-			$model = $this->defaultModel;
+			$model = $this->_View->Form->defaultModel;
 		}
 		if (!empty($options['value'])) {
 			$value = $options['value'];
