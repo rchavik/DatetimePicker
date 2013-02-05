@@ -14,10 +14,13 @@ class DatetimePickerHelper extends CroogoFormHelper {
 		$o = array('inline' => false);
 		$scripts = array(
 			'DatetimePicker.bootstrap-datetimepicker',
+			'DatetimePicker.date',
+			'DatetimePicker.daterangepicker',
 		);
 		$this->_View->Html->script($scripts, $o);
 		$css = array(
 			'DatetimePicker.bootstrap-datetimepicker',
+			'DatetimePicker.daterangepicker',
 		);
 		$this->_View->Html->css($css, null, $o);
 	}
@@ -30,6 +33,7 @@ class DatetimePickerHelper extends CroogoFormHelper {
 
 		$s =<<<EOF
 $('.input-prepend.date,.input-append.date').datetimepicker();
+$('input.daterange').daterangepicker();
 EOF;
 		$this->_View->Js->buffer($s);
 	}
@@ -140,6 +144,19 @@ EOF;
 		return $options;
 	}
 
+	protected function _dateRangePickerOptions($fieldName, $options) {
+		if (empty($options['label']) && empty($options['placeholder'])) {
+			$options['placeholder'] = Inflector::humanize(__($fieldName));
+		}
+		if (empty($options['class'])) {
+			$options['class'] = 'daterange';
+		} else {
+			$options['class'] .= ' daterange';
+		}
+		$options['type'] = 'text';
+		return $options;
+	}
+
 	public function input($fieldName, $options = array()) {
 		$toggle = null;
 		if (isset($options['data-toggle'])) {
@@ -151,6 +168,10 @@ EOF;
 			case 'time':
 			case 'datetime':
 				$options = $this->_datePickerOptions($fieldName, $options);
+			break;
+
+			case 'daterange':
+				$options = $this->_dateRangePickerOptions($fieldName, $options);
 			break;
 		}
 
