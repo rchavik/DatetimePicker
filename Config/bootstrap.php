@@ -1,6 +1,6 @@
 <?php
 
-//Configure::write('DatetimePicker.assets', true);
+Configure::write('DatetimePicker.assets', true);
 
 Croogo::hookHelper('*', array(
 	'Form' => array(

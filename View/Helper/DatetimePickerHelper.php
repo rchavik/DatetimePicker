@@ -10,16 +10,28 @@ class DatetimePickerHelper extends CroogoFormHelper {
 		'Js',
 	);
 
+	public function assets() {
+		$o = array('inline' => false);
+		$scripts = array(
+			'DatetimePicker.bootstrap-datetimepicker',
+		);
+		$this->_View->Html->script($scripts, $o);
+		$css = array(
+			'DatetimePicker.bootstrap-datetimepicker',
+		);
+		$this->_View->Html->css($css, null, $o);
+	}
+
 	public function beforeRender($viewFile) {
 		parent::beforeRender($viewFile);
-		if (Configure::read('DatetimePicker.assets') !== true) {
-			return;
+		if (Configure::read('DatetimePicker.assets') === true) {
+			$this->assets();
 		}
-		$View = $this->_View;
-		$o = array('inline' => false);
-		$View->Html->script('DatetimePicker.bootstrap-datetimepicker', $o);
-		$View->Html->css('DatetimePicker.bootstrap-datetimepicker', null, $o);
-		$View->Js->buffer('$(\'.input-prepend.date,.input-append.date\').datetimepicker()');
+
+		$s =<<<EOF
+$('.input-prepend.date,.input-append.date').datetimepicker();
+EOF;
+		$this->_View->Js->buffer($s);
 	}
 
 	protected function _datePickerOptions($fieldName, $options) {
@@ -129,10 +141,19 @@ class DatetimePickerHelper extends CroogoFormHelper {
 	}
 
 	public function input($fieldName, $options = array()) {
-		$toggles = array('date', 'time', 'datetime');
-		if (isset($options['data-toggle']) && in_array($options['data-toggle'], $toggles)) {
-			$options = $this->_datePickerOptions($fieldName, $options);
+		$toggle = null;
+		if (isset($options['data-toggle'])) {
+			$toggle = $options['data-toggle'];
 		}
+
+		switch ($toggle) {
+			case 'date':
+			case 'time':
+			case 'datetime':
+				$options = $this->_datePickerOptions($fieldName, $options);
+			break;
+		}
+
 		return parent::input($fieldName, $options);
 	}
 
