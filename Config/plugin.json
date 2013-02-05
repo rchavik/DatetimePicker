@@ -1,0 +1,10 @@
+{
+	"name": "DatetimePicker",
+	"description": "DatetimePicker Plugin for Croogo",
+	"author": "Rachman Chavik",
+	"authorEmail": "rchavik@xintesa.com",
+	"dependencies": {
+		"plugins": [
+		]
+	}
+}
