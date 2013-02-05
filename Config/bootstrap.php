@@ -2,4 +2,8 @@
 
 //Configure::write('DatetimePicker.assets', true);
 
-Croogo::hookHelper('*', 'DatetimePicker.DatetimePicker');
+Croogo::hookHelper('*', array(
+	'Form' => array(
+		'className' => 'DatetimePicker.DatetimePicker',
+	)
+));
