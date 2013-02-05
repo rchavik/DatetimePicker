@@ -129,7 +129,10 @@ class DatetimePickerHelper extends CroogoFormHelper {
 	}
 
 	public function input($fieldName, $options = array()) {
-		$options = $this->_datePickerOptions($fieldName, $options);
+		$toggles = array('date', 'time', 'datetime');
+		if (isset($options['data-toggle']) && in_array($options['data-toggle'], $toggles)) {
+			$options = $this->_datePickerOptions($fieldName, $options);
+		}
 		return parent::input($fieldName, $options);
 	}
 
