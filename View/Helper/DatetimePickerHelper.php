@@ -145,9 +145,6 @@ EOF;
 	}
 
 	protected function _dateRangePickerOptions($fieldName, $options) {
-		if (empty($options['label']) && empty($options['placeholder'])) {
-			$options['placeholder'] = Inflector::humanize(__($fieldName));
-		}
 		if (empty($options['class'])) {
 			$options['class'] = 'daterange';
 		} else {
