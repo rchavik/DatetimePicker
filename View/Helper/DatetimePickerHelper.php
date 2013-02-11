@@ -31,11 +31,13 @@ class DatetimePickerHelper extends CroogoFormHelper {
 			$this->assets();
 		}
 
-		$s =<<<EOF
+		if (Configure::read('DatetimePicket.autoScript') === true) {
+			$s =<<<EOF
 $('.input-prepend.date,.input-append.date').datetimepicker();
 $('input.daterange').daterangepicker();
 EOF;
-		$this->_View->Js->buffer($s);
+			$this->_View->Js->buffer($s);
+		}
 	}
 
 	protected function _datePickerOptions($fieldName, $options) {
